@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,15 +28,33 @@ class FriendListActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var firestore: FirebaseFirestore
     private lateinit var fAuth: FirebaseAuth
+    private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friend_list)
 
         fab=findViewById(R.id.fab)
+        searchView = findViewById(R.id.search_view)
 
         val recycler_view = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recycler_view)
-        adapter = FriendListAdapter()
+        adapter = FriendListAdapter(
+            emptyList(),
+            onSendFriendRequest = { user ->
+                userViewModel.sendFriendRequest(user.userId)
+                notifyUser(user.userId, "Friend request sent")
+            },
+            onAcceptFriendRequest = { user ->
+                userViewModel.acceptFriendRequest(user.userId)
+                notifyUser(user.userId, "Friend request accepted")
+            },
+            onViewLocation = { user ->
+                // Handle view location action
+                val intent = Intent(this, GoogleMapActivity::class.java)
+                intent.putExtra("user_uid", user.userId)
+                startActivity(intent)
+            }
+        )
         recycler_view.layoutManager = LinearLayoutManager(this)
         recycler_view.adapter = adapter
 
@@ -43,6 +62,22 @@ class FriendListActivity : AppCompatActivity() {
         userViewModel.getUsers().observe(this) { users ->
             adapter.setUsers(users)
         }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    userViewModel.searchUsers(it)
+                    userViewModel.getSearchResults().observe(this@FriendListActivity) { users ->
+                        adapter.setUsers(users)
+                    }
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         firestore = FirebaseFirestore.getInstance()
@@ -104,6 +139,10 @@ class FriendListActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Failed to save location to Firestore: $e", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun notifyUser(userId: String, message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
