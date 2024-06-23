@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">LocationSharingApp</string>
+    <string name="find_your_lost_friends">Find Your Lost Friends</string>
+    <string name="my_location">my location\n</string>
+    <string name="zoom_in">zoom in\n</string>
+    <string name="zoom_out">zoom out</string>
 </resources>

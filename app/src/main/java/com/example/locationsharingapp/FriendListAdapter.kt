@@ -29,8 +29,10 @@ class FriendListAdapter : RecyclerView.Adapter<FriendListAdapter.FriendViewHolde
 
     class FriendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(user: User) {
-            itemView.findViewById<TextView>(R.id.nameTextView).text = user.name
-            itemView.findViewById<TextView>(R.id.emailTextView).text = user.email
+            itemView.findViewById<TextView>(R.id.userName).text = user.name
+            itemView.findViewById<TextView>(R.id.userEmail).text = user.email
+            itemView.findViewById<TextView>(R.id.lattitude).text = user.latitude.toString()
+            itemView.findViewById<TextView>(R.id.longtitute).text = user.longitude.toString()
         }
     }
 }

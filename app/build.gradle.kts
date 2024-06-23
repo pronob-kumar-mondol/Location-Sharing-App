@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.firebase.auth.v2231)
     implementation (libs.firebase.firestore)
     implementation(libs.androidx.activity)
+    implementation(libs.firebase.database.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -73,4 +74,11 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     // Testing Fragments in Isolation
     debugImplementation(libs.androidx.fragment.testing)
+
+    //Lottie Animation
+    implementation (libs.lottie)
+
+    //CircleImageView
+    implementation (libs.circleimageview)
+
 }

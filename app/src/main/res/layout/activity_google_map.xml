@@ -9,4 +9,40 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/my_location_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="40dp"
+        android:src="@drawable/pinpoint"
+        android:backgroundTint="@color/orange"
+        android:contentDescription="@string/my_location" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="120dp"
+        android:layout_marginRight="40dp"
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/zoom_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/plus"
+            android:contentDescription="@string/zoom_in"
+            android:layout_marginBottom="8dp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/zoom_out_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/minus"
+            android:contentDescription="@string/zoom_out"/>
+    </LinearLayout>
+
 </RelativeLayout>

@@ -1,6 +1,7 @@
 [versions]
-agp = "8.5.0-beta02"
+agp = "8.4.1"
 appcompatVersion = "1.6.1"
+circleimageview = "3.1.0"
 coreKtxVersion = "1.12.0"
 firebaseAuthVersion = "22.3.1"
 firebaseFirestoreVersion = "24.10.3"
@@ -14,6 +15,7 @@ junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.7.0"
 lifecycleViewmodelKtx = "2.7.0"
+lottieVersion = "3.4.0"
 material = "1.12.0"
 activity = "1.9.0"
 constraintlayout = "2.1.4"
@@ -23,6 +25,7 @@ firebaseFirestore = "25.0.0"
 materialVersion = "1.11.0"
 playServicesLocation = "21.3.0"
 playServicesMaps = "18.2.0"
+firebaseDatabaseKtx = "21.0.0"
 
 [libraries]
 androidx-appcompat-v161 = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
@@ -35,6 +38,7 @@ androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-ru
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuth" }
 firebase-auth-v2231 = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuthVersion" }
 firebase-common = { module = "com.google.firebase:firebase-common", version.ref = "firebaseFirestoreVersion" }
@@ -45,6 +49,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottieVersion" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
@@ -53,6 +58,7 @@ firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore
 material-v1110 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
