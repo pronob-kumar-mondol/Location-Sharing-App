@@ -1,8 +1,10 @@
 [versions]
-agp = "8.4.1"
+agp = "8.3.2"
 appcompatVersion = "1.6.1"
 circleimageview = "3.1.0"
 coreKtxVersion = "1.12.0"
+faboptions = "1.2.0"
+faboptionsVersion = "1.0.1"
 firebaseAuthVersion = "22.3.1"
 firebaseFirestoreVersion = "24.10.3"
 fragmentKtx = "1.6.2"
@@ -23,6 +25,7 @@ googleGmsGoogleServices = "4.4.2"
 firebaseAuth = "23.0.0"
 firebaseFirestore = "25.0.0"
 materialVersion = "1.11.0"
+multiFloatingActionButton = "1.1.0"
 playServicesLocation = "21.3.0"
 playServicesMaps = "18.2.0"
 firebaseDatabaseKtx = "21.0.0"
@@ -39,6 +42,8 @@ androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtim
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
+faboptions = { module = "com.github.joaquimley:faboptions", version.ref = "faboptions" }
+faboptions-v101 = { module = "com.github.joaquimley:faboptions", version.ref = "faboptionsVersion" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuth" }
 firebase-auth-v2231 = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuthVersion" }
 firebase-common = { module = "com.google.firebase:firebase-common", version.ref = "firebaseFirestoreVersion" }
@@ -56,6 +61,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 material-v1110 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+multi-floating-action-button = { module = "com.github.lemillion12:multi-floating-action-button", version.ref = "multiFloatingActionButton" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }

@@ -3,16 +3,19 @@ package com.example.locationsharingapp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
-class UserRepository {
+class UserRepository(private val firestore: FirebaseFirestore) {
 
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val usersLiveData: MutableLiveData<List<User>> = MutableLiveData()
-    private val friendsLiveData: MutableLiveData<List<User>> = MutableLiveData()
-    private val friendRequestsLiveData: MutableLiveData<List<User>> = MutableLiveData()
+    fun addUser(user: User) {
+        firestore.collection("users").document(user.userId)
+            .set(user)
+    }
 
+    private val auth = FirebaseAuth.getInstance()
+    private val usersLiveData = MutableLiveData<List<User>>()
     fun getUsers(): MutableLiveData<List<User>> {
         val currentUserUid = auth.currentUser?.uid
         firestore.collection("users")
@@ -26,117 +29,69 @@ class UserRepository {
         return usersLiveData
     }
 
-    fun getFriends(): MutableLiveData<List<User>> {
-        val currentUserUid = auth.currentUser?.uid ?: return friendsLiveData
-        firestore.collection("users").document(currentUserUid)
-            .get()
-            .addOnSuccessListener { document ->
-                val user = document.toObject(User::class.java)
-                val friendsUids = user?.friends ?: emptyList()
-                if (friendsUids.isNotEmpty()) {
-                    fetchFriends(friendsUids)
-                } else {
-                    friendsLiveData.value = emptyList()
-                }
-            }
-        return friendsLiveData
-    }
-
-    private fun fetchFriends(friendsUids: List<String>) {
-        firestore.collection("users")
-            .whereIn("uid", friendsUids)
-            .get()
-            .addOnSuccessListener { result ->
-                val friends = result.map { it.toObject(User::class.java) }
-                friendsLiveData.value = friends
-            }
-            .addOnFailureListener { e ->
-                friendsLiveData.value = emptyList() // Or handle the error appropriately
-            }
-    }
-
-    fun getFriendRequests(): MutableLiveData<List<User>> {
-        val currentUserUid = auth.currentUser?.uid ?: return friendRequestsLiveData
-        firestore.collection("users").document(currentUserUid)
-            .get()
-            .addOnSuccessListener { document ->
-                val user = document.toObject(User::class.java)
-                val friendRequestUids = user?.friendRequests ?: emptyList()
-                if (friendRequestUids.isNotEmpty()) {
-                    fetchFriendRequests(friendRequestUids)
-                } else {
-                    friendRequestsLiveData.value = emptyList()
-                }
-            }
-        return friendRequestsLiveData
-    }
-
-    private fun fetchFriendRequests(friendRequestUids: List<String>) {
-        firestore.collection("users")
-            .whereIn("uid", friendRequestUids)
-            .get()
-            .addOnSuccessListener { result ->
-                val requests = result.map { it.toObject(User::class.java) }
-                friendRequestsLiveData.value = requests
-            }
-            .addOnFailureListener { e ->
-                friendRequestsLiveData.value = emptyList() // Or handle the error appropriately
-            }
-    }
-
     fun updateUser(user: User) {
         firestore.collection("users").document(user.userId)
             .set(user)
     }
 
-    fun addUser(user: User) {
-        firestore.collection("users").document(user.userId)
-            .set(user)
-    }
 
-    fun sendFriendRequest(targetUid: String) {
-        val currentUserUid = auth.currentUser?.uid ?: return
-        val currentUserDoc = firestore.collection("users").document(currentUserUid)
-        firestore.runTransaction { transaction ->
-            val snapshot = transaction.get(currentUserDoc)
-            val currentRequests = snapshot.get("friendRequests") as? List<String> ?: emptyList<String>()
-            if (!currentRequests.contains(targetUid)) {
-                val updatedRequests = currentRequests + targetUid
-                transaction.update(currentUserDoc, "friendRequests", updatedRequests)
-            }
-        }
-    }
+    private val currentUser get() = FirebaseAuth.getInstance().currentUser?.uid
 
-    fun acceptFriendRequest(senderUid: String) {
-        val currentUserUid = auth.currentUser?.uid ?: return
-        val currentUserDoc = firestore.collection("users").document(currentUserUid)
-        firestore.runTransaction { transaction ->
-            val snapshot = transaction.get(currentUserDoc)
-            val currentRequests = snapshot.get("friendRequests") as? List<String> ?: emptyList<String>()
-            if (currentRequests.contains(senderUid)) {
-                val updatedRequests = currentRequests - senderUid
-                val updatedFriends = (snapshot.get("friends") as? List<String> ?: emptyList<String>()) + senderUid
-                transaction.update(currentUserDoc, "friendRequests", updatedRequests)
-                transaction.update(currentUserDoc, "friends", updatedFriends)
-
-                // Update sender's friends list as well
-                val senderDoc = firestore.collection("users").document(senderUid)
-                val senderSnapshot = transaction.get(senderDoc)
-                val senderFriends = (senderSnapshot.get("friends") as? List<String> ?: emptyList<String>()) + currentUserUid
-                transaction.update(senderDoc, "friends", senderFriends)
-            }
-        }
-    }
-
-    fun searchUsers(query: String): LiveData<List<User>> {
-        val searchResults = MutableLiveData<List<User>>()
-        firestore.collection("users")
+    suspend fun searchUsers(query: String): List<User> {
+        val result = firestore.collection("users")
             .whereEqualTo("name", query)
             .get()
-            .addOnSuccessListener { result ->
-                val users = result.map { it.toObject(User::class.java) }
-                searchResults.value = users
-            }
-        return searchResults
+            .await()
+        return result.map { doc -> doc.toObject(User::class.java) }
+    }
+
+    suspend fun getFriendRequests(): List<User> {
+        val result = firestore.collection("users")
+            .whereArrayContains("friendRequests", currentUser!!)
+            .get()
+            .await()
+        return result.map { doc -> doc.toObject(User::class.java) }
+    }
+
+    suspend fun sendFriendRequest(userId: String) {
+        val currentUserRef = firestore.collection("users").document(currentUser!!)
+        val userRef = firestore.collection("users").document(userId)
+
+        firestore.runBatch { batch ->
+            batch.update(currentUserRef, "friendRequests", FieldValue.arrayUnion(userId))
+            batch.update(userRef, "friendRequests", FieldValue.arrayUnion(currentUser))
+        }.await()
+    }
+
+    suspend fun acceptFriendRequest(userId: String) {
+        val currentUserRef = firestore.collection("users").document(currentUser!!)
+        val userRef = firestore.collection("users").document(userId)
+
+        firestore.runBatch { batch ->
+            batch.update(currentUserRef, "friends", FieldValue.arrayUnion(userId))
+            batch.update(userRef, "friends", FieldValue.arrayUnion(currentUser))
+            batch.update(currentUserRef, "friendRequests", FieldValue.arrayRemove(userId))
+            batch.update(userRef, "friendRequests", FieldValue.arrayRemove(currentUser))
+        }.await()
+    }
+
+    suspend fun cancelFriendRequest(userId: String) {
+        val currentUserRef = firestore.collection("users").document(currentUser!!)
+        val userRef = firestore.collection("users").document(userId)
+
+        firestore.runBatch { batch ->
+            batch.update(currentUserRef, "friendRequests", FieldValue.arrayRemove(userId))
+            batch.update(userRef, "friendRequests", FieldValue.arrayRemove(currentUser))
+        }.await()
+    }
+
+    suspend fun unfriend(userId: String) {
+        val currentUserRef = firestore.collection("users").document(currentUser!!)
+        val userRef = firestore.collection("users").document(userId)
+
+        firestore.runBatch { batch ->
+            batch.update(currentUserRef, "friends", FieldValue.arrayRemove(userId))
+            batch.update(userRef, "friends", FieldValue.arrayRemove(currentUser))
+        }.await()
     }
 }

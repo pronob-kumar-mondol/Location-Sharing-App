@@ -1,3 +1,7 @@
+import org.gradle.internal.impldep.com.fasterxml.jackson.core.JsonPointer.compile
+import org.jetbrains.kotlin.storage.CacheResetOnProcessCanceled.enabled
+
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -13,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.locationsharingapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -37,6 +41,8 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+
 }
 
 dependencies {
@@ -80,5 +86,11 @@ dependencies {
 
     //CircleImageView
     implementation (libs.circleimageview)
+
+    implementation (libs.multi.floating.action.button)
+
+
+    implementation ("androidx.compose.material:material-icons-core:1.0.0")
+    implementation ("androidx.compose.material:material-icons-extended:1.0.0")
 
 }

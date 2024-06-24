@@ -25,9 +25,87 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="62dp"
+        android:layout_marginEnd="41dp"
+        android:layout_marginBottom="73dp"
         android:backgroundTint="@color/orange"
-        android:src="@drawable/map"/>
+        android:src="@drawable/map" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="41dp"
+        android:layout_marginBottom="143dp"
+        app:fabSize="normal"
+        android:backgroundTint="@color/blue"
+        android:src="@drawable/plus1" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fab_main"
+        android:layout_alignStart="@+id/fab_main"
+        android:layout_alignEnd="@+id/fab_main"
+        android:layout_marginStart="9dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="14dp"
+        android:backgroundTint="@color/lightblue"
+        android:src="@drawable/profileuser"
+        android:visibility="invisible"
+        app:fabSize="mini"
+        app:maxImageSize="20dp"
+        app:shapeAppearance="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fab1"
+        android:layout_alignStart="@+id/fab1"
+        android:layout_alignEnd="@+id/fab1"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="14dp"
+        app:fabSize="mini"
+        app:shapeAppearance="@style/Widget.MaterialComponents.Toolbar.Primary"
+        android:backgroundTint="@color/lightblue"
+        android:src="@drawable/request"
+        android:visibility="invisible" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fab2"
+        android:layout_alignStart="@+id/fab2"
+        android:layout_alignEnd="@+id/fab2"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="15dp"
+        app:fabSize="mini"
+        app:shapeAppearance="@style/Widget.MaterialComponents.Toolbar.Primary"
+        android:backgroundTint="@color/lightblue"
+        android:src="@drawable/notification"
+        android:visibility="invisible" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fab3"
+        android:layout_alignStart="@+id/fab3"
+        android:layout_alignEnd="@+id/fab3"
+        android:layout_marginStart="0dp"
+        app:fabSize="mini"
+        app:shapeAppearance="@style/Widget.MaterialComponents.Toolbar.Primary"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="14dp"
+        android:backgroundTint="@color/lightblue"
+        android:src="@drawable/settings"
+        android:visibility="invisible" />
+
 
 </RelativeLayout>
