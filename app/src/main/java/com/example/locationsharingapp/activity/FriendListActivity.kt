@@ -146,10 +146,6 @@ class FriendListActivity : AppCompatActivity() {
             toggleFab()
         }
 
-        fab2.setOnClickListener{
-            val intent = Intent(this, ManagingFriendRequest::class.java)
-            startActivity(intent)
-        }
 
 
     }
